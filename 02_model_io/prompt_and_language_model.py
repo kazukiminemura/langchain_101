@@ -1,6 +1,6 @@
 from langchain import PromptTemplate
 from langchain_core.messages import HumanMessage, AIMessage
-from langchain_openai import ChatOpenAI # langchain==1.0.0 
+from langchain_openai import ChatOpenAI 
 
 
 chat = ChatOpenAI(
