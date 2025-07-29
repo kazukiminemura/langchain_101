@@ -6,4 +6,7 @@ langchain-community      0.3.27
 langchain-core           0.3.72
 langchain-openai         0.3.28
 langchain-text-splitters 0.3.9
+pydantic                 2.11.7
+pydantic_core            2.33.2
+pydantic-settings        2.10.1
 ```
