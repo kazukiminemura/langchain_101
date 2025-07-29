@@ -2,7 +2,8 @@ from ast import parse
 from langchain_openai import ChatOpenAI 
 from langchain.schema import HumanMessage
 from langchain.output_parsers import PydanticOutputParser
-from pydantic import BaseModel, Field, field_validator, validator
+from langchain.output_parsers import OutputFixingParser
+from pydantic import BaseModel, Field, field_validator
 
 chat = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
 
@@ -18,7 +19,10 @@ class Smartphone(BaseModel):
             raise ValueError("画面サイズは正の数でなければなりません。")
         return field
     
-parser = PydanticOutputParser(pydantic_object=Smartphone)
+parser = OutputFixingParser.from_llm(
+    parser=PydanticOutputParser(pydantic_object=Smartphone),
+    llm=chat,
+)
 
 result = chat.invoke(
     [
