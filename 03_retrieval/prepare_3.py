@@ -7,7 +7,7 @@ loader = PyMuPDFLoader("./sample.pdf")
 documents = loader.load() # 一ページごとに一つの文章が作成される
 
 test_splitter = SpacyTextSplitter(
-  chunk_size=300,
+  chunk_size=200,
   pipeline="en_core_web_sm",
 )
 splitted_documents = test_splitter.split_documents(documents)
