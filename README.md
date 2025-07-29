@@ -13,8 +13,10 @@ PyMuPDF                  1.26.3
 spacy                    3.8.7
 spacy-legacy             3.0.12
 spacy-loggers            1.0.5
+chromadb                 1.0.15
+tiktoken                 0.9.0
 ```
-    
+
 Language models
 ```
 python -m spacy download ja_core_news_s
