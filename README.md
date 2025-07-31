@@ -15,6 +15,7 @@ spacy-legacy             3.0.12
 spacy-loggers            1.0.5
 chromadb                 1.0.15
 tiktoken                 0.9.0
+wikipedia                1.4.0
 ```
 
 Language models
