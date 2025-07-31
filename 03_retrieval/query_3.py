@@ -11,17 +11,7 @@ embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
 retriever = Chroma(persist_directory="./data", embedding_function=embeddings).as_retriever()
 prompt = PromptTemplate.from_template("文章を元に質問に答えてください。\n\n文章:\n{context}\n\n質問: {input}")
 
-# RAG Chain
-# basic_qa_chain = create_stuff_documents_chain(
-#     llm = chat,
-#     prompt = prompt,
-# )
-
-# rag_chain = create_retrieval_chain(
-#   retriever = retriever,
-#   combine_docs_chain = basic_qa_chain,
-# )
-
+# Runnable Implementation
 query = "what is kazuki minemura's skill sets?"
 
 # 文書を整形する関数
