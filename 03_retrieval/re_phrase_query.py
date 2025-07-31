@@ -2,7 +2,7 @@ from langchain_openai import ChatOpenAI
 from langchain_community.retrievers import WikipediaRetriever
 from langchain.retrievers.re_phraser import RePhraseQueryRetriever
 from langchain.prompts import PromptTemplate
-from langchain_core.runnables import RunnableLambda
+from langchain_core.output_parsers import StrOutputParser
 
 retriever = WikipediaRetriever(
   lang='ja',
@@ -20,7 +20,7 @@ prompt = PromptTemplate(
   """
 )
 
-llm_chain = (prompt | llm) | RunnableLambda(lambda msg: msg.content) # RunnableSequenceとして自動構築される
+llm_chain = prompt | llm | StrOutputParser() # RunnableSequenceとして自動構築される
 
 re_phrase_query_retriever = RePhraseQueryRetriever(
   llm_chain = llm_chain,
