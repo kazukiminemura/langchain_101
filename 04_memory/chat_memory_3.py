@@ -2,7 +2,6 @@ import os
 import chainlit as cl
 from langchain_openai import ChatOpenAI
 from langchain_core.runnables.history import RunnableWithMessageHistory
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_community.chat_message_histories  import RedisChatMessageHistory
 from langchain_core.output_parsers import StrOutputParser
 
@@ -14,17 +13,10 @@ def get_session_history(session_id: str) -> RedisChatMessageHistory:
     )
 
 llm = ChatOpenAI(model="gpt-3.5-turbo")
-prompt = ChatPromptTemplate.from_messages([
-    MessagesPlaceholder(variable_name="history"),
-    ("human", "{input}")
-])
-
-chain = prompt | llm | StrOutputParser()
+chain =  llm | StrOutputParser()
 chatbot = RunnableWithMessageHistory(
     runnable=chain,
     get_session_history=get_session_history,
-    input_messages_key="input",
-    history_messages_key="history"
 )
 
 ### テスト実行 ###
@@ -42,7 +34,7 @@ async def on_chat_start():
 @cl.on_message
 async def on_message(message: cl.Message):
     # 会話モデル呼び出し（非同期）
-    result = chatbot.invoke({"input": message.content}, config={"configurable": {"session_id": "user1"}})
+    result = chatbot.invoke(message.content, config={"configurable": {"session_id": "user1"}})
 
     # クライアントへ応答
     await cl.Message(content=result).send()
