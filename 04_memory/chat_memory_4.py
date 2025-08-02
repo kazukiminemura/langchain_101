@@ -25,26 +25,18 @@ async def on_chat_start():
         
     # LLMチェーン作成
     llm = ChatOpenAI(model="gpt-3.5-turbo")
-    chain =  llm | StrOutputParser()
     # RunnableWithMessageHistory に履歴管理関数を登録
     chatbot = RunnableWithMessageHistory(
-        runnable=chain,
+        runnable=llm | StrOutputParser(),
         get_session_history=get_session_history,
     )
 
     # 過去のメッセージを表示
-    messages = get_session_history(thread_id).messages
-    for message in messages:
-        if isinstance(message, HumanMessage):
-            await cl.Message(
-                author="User",
-                content=f"{message.content}",
-            ).send()
-        else:
-            await cl.Message(
-                author = "Chatbot",
-                content=f"{message.content}",
-            ).send()
+    history = get_session_history(thread_id)
+    for msg in history.messages:
+        author = "User" if isinstance(msg, HumanMessage) else "Chatbot"
+        await cl.Message(author=author, content=msg.content).send()
+        
     cl.user_session.set("chatbot", chatbot)
     cl.user_session.set("thread_id", thread_id)
 
